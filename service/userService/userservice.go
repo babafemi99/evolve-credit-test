@@ -10,7 +10,7 @@ import (
 type UserServiceInterface interface {
 	Save(user2 *user.User) (*user.User, error)
 	FindByEmail(email string) (*user.User, error)
-	FindByDate(limit, offset int, start, end time.Time) ([]user.User, error)
+	FindByDate(limit, offset int, start, end string) ([]user.User, error)
 	FindAll(limit, offset int) ([]user.User, error)
 }
 
@@ -27,10 +27,13 @@ func (u *userService) FindByEmail(email string) (*user.User, error) {
 	return u.repo.GetByEmail(email)
 }
 
-func (u *userService) FindByDate(limit, offset int, start, end time.Time) ([]user.User, error) {
+func (u *userService) FindByDate(limit, offset int, start, end string) ([]user.User, error) {
 	newLimit := strconv.Itoa(limit)
 	newOffset := strconv.Itoa(offset)
-	return u.repo.GetByDate(newLimit, newOffset, start, end)
+	layout := "2000-00-00"
+	startDate, _ := time.Parse(layout, start)
+	endDate, _ := time.Parse(layout, end)
+	return u.repo.GetByDate(newLimit, newOffset, startDate, endDate)
 }
 
 func (u *userService) FindAll(limit, offset int) ([]user.User, error) {

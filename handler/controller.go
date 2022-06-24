@@ -57,10 +57,17 @@ func (u *userController) GetUserByEmail(w http.ResponseWriter, r *http.Request) 
 
 func (u *userController) GetUsersByDate(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-type", "application/json")
-	//var date dateInput.Date
-	//var err error
-	//start := strings.Split(r.URL.Path/)
-	panic("Implement me")
+	start := r.URL.Query().Get("start")
+	end := r.URL.Query().Get("end")
+	limit, offset := paginate(r)
+	Users, err := u.srv.FindByDate(limit, offset, start, end)
+	if err != nil {
+		log.Printf("error: %v", err)
+		http.Error(w, "Error finding clients with give dates ", http.StatusInternalServerError)
+		return
+	}
+	w.WriteHeader(http.StatusOK)
+	json.NewEncoder(w).Encode(&Users)
 
 }
 
