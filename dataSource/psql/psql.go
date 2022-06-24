@@ -20,8 +20,8 @@ func init() {
 	if err != nil {
 		log.Println(err)
 	}
-	dsn := os.Getenv("DSN")
-	conn, err = pgx.Connect(context.Background(), dsn)
+	//dsn := os.Getenv("DSN")
+	conn, err = pgx.Connect(context.Background(), "postgres://webuser01:oooooooo@database-1.cv1yprcb749w.us-east-1.rds.amazonaws.com:5432/evcdb")
 	if err != nil {
 		log.Fatalf("Unable to connect to database: %v", err)
 	}
