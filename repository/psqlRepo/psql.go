@@ -4,6 +4,7 @@ import (
 	"context"
 	"evc/entity/user"
 	"evc/repository"
+	"fmt"
 	"github.com/jackc/pgx/v5"
 	"log"
 	"time"
@@ -82,7 +83,8 @@ func (p *psql) GetByEmail(email string) (*user.User, error) {
 
 func (p *psql) GetByDate(limit, offset string, start, end time.Time) ([]user.User, error) {
 	var users []user.User
-	queryBuilder := "SELECT * FROM user_table WHERE date BETWEEN ? AND ? VALUES($1, $2) LIMIT" + limit + "OFFSET" + offset
+	queryBuilder := `SELECT * FROM user_table WHERE date BETWEEN '$1' AND '$2' LIMIT` + limit + " OFFSET " + offset
+	fmt.Println(queryBuilder)
 	rows, err := p.driver.Query(context.Background(), queryBuilder, start, end)
 	if err != nil {
 		log.Printf("Error querying users: %v", err)

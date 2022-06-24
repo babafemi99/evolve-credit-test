@@ -42,8 +42,6 @@ func (u *userController) SaveUser(w http.ResponseWriter, r *http.Request) {
 
 func (u *userController) GetUserByEmail(w http.ResponseWriter, r *http.Request) {
 	email := strings.Split(r.URL.Path, "/")[2]
-	fmt.Println(email)
-
 	USER, err := u.srv.FindByEmail(email)
 	if err != nil {
 		fmt.Println(err)
@@ -57,8 +55,8 @@ func (u *userController) GetUserByEmail(w http.ResponseWriter, r *http.Request) 
 
 func (u *userController) GetUsersByDate(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-type", "application/json")
-	start := r.URL.Query().Get("start")
-	end := r.URL.Query().Get("end")
+	start := strings.Split(r.URL.Path, "/")[3]
+	end := strings.Split(r.URL.Path, "/")[4]
 	limit, offset := paginate(r)
 	Users, err := u.srv.FindByDate(limit, offset, start, end)
 	if err != nil {
@@ -76,7 +74,6 @@ func (u *userController) GetAllUser(w http.ResponseWriter, r *http.Request) {
 	limit, offset := paginate(r)
 	fmt.Println(limit, offset)
 	Users, err := u.srv.FindAll(limit, offset)
-	fmt.Print(Users)
 	if err != nil {
 		log.Printf("error: %v", err)
 		http.Error(w, "Error finding clients", http.StatusInternalServerError)

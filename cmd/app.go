@@ -33,5 +33,7 @@ func Start() {
 	WebRouter.POST("/user", UserController.SaveUser)
 	WebRouter.GET("/users", UserController.GetAllUser)
 	WebRouter.GET("/users/{email}", UserController.GetUserByEmail)
+	WebRouter.GET("/users/date/{start}/{end}", UserController.GetUsersByDate)
+
 	WebRouter.SERVE(port)
 }

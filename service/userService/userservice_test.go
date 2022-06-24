@@ -54,3 +54,33 @@ func TestSave(t *testing.T) {
 	assert.Equal(t, "Lawal", testRes.FirstName)
 	assert.Equal(t, "o@o.com", testRes.Email)
 }
+
+func TestFindAll(t *testing.T) {
+	mockRepo := new(MockRepository)
+	users := []user.User{
+		{
+			Id:        "2",
+			FirstName: "Lawal",
+			LastName:  "Bayo",
+			Email:     "o@o.com",
+			Date:      time.Now(),
+		},
+		{
+			Id:        "1",
+			FirstName: "Ojo",
+			LastName:  "Balo",
+			Email:     "o@joo.com",
+			Date:      time.Now(),
+		},
+	}
+
+	mockRepo.On("FindAll").Return(users, nil)
+	testService := NewUserService(mockRepo)
+	testRes, err := testService.FindAll(10, 20)
+
+	assert.NotNil(t, testRes[0].Email)
+	assert.Nil(t, err)
+	assert.Equal(t, "Lawal", testRes[0].FirstName)
+	assert.Equal(t, "o@o.com", testRes[0].Email)
+
+}
