@@ -7,7 +7,6 @@ import (
 	"fmt"
 	"github.com/jackc/pgx/v5"
 	"log"
-	"time"
 )
 
 const (
@@ -81,11 +80,10 @@ func (p *psql) GetByEmail(email string) (*user.User, error) {
 
 }
 
-func (p *psql) GetByDate(limit, offset string, start, end time.Time) ([]user.User, error) {
+func (p *psql) GetByDate(limit, offset string, start, end string) ([]user.User, error) {
 	var users []user.User
-	queryBuilder := `SELECT * FROM user_table WHERE date BETWEEN '$1' AND '$2' LIMIT` + limit + " OFFSET " + offset
-	fmt.Println(queryBuilder)
-	rows, err := p.driver.Query(context.Background(), queryBuilder, start, end)
+	qbd := fmt.Sprintf("SELECT * FROM user_table WHERE date BETWEEN '%v' AND '%v' LIMIT %v OFFSET %v", start, end, limit, offset)
+	rows, err := p.driver.Query(context.Background(), qbd)
 	if err != nil {
 		log.Printf("Error querying users: %v", err)
 		return nil, err

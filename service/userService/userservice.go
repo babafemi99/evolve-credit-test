@@ -30,10 +30,7 @@ func (u *userService) FindByEmail(email string) (*user.User, error) {
 func (u *userService) FindByDate(limit, offset int, start, end string) ([]user.User, error) {
 	newLimit := strconv.Itoa(limit)
 	newOffset := strconv.Itoa(offset)
-	layout := "2000-00-00"
-	startDate, _ := time.Parse(layout, start)
-	endDate, _ := time.Parse(layout, end)
-	return u.repo.GetByDate(newLimit, newOffset, startDate, endDate)
+	return u.repo.GetByDate(newLimit, newOffset, start, end)
 }
 
 func (u *userService) FindAll(limit, offset int) ([]user.User, error) {
