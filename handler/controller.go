@@ -2,9 +2,13 @@ package handler
 
 import (
 	"encoding/json"
+	user2 "evc/entity/user"
 	"evc/service/userService"
+	"fmt"
+	"log"
 	"net/http"
 	"strconv"
+	"strings"
 )
 
 type UserControllerInterface interface {
@@ -18,19 +22,37 @@ type userController struct {
 }
 
 func (u *userController) SaveUser(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Content-type", "application/json")
-	panic("implement me")
+	w.Header().Add("Content-type", "application/json")
+	var user user2.User
+	err := json.NewDecoder(r.Body).Decode(&user)
+	if err != nil {
+		log.Fatalf("%v", err)
+		http.Error(w, "Invalid request", http.StatusBadRequest)
+		return
+	}
+	save, err := u.srv.Save(&user)
+	if err != nil {
+		log.Fatalf("%v", err)
+		http.Error(w, "Error saving user to db", http.StatusInternalServerError)
+		return
+	}
+	w.WriteHeader(http.StatusOK)
+	json.NewEncoder(w).Encode(&save)
 }
 
 func (u *userController) GetUserByEmail(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Content-type", "application/json")
+	email := strings.Split(r.URL.Path, "/")[2]
+	fmt.Println(email)
 
-	user, err := u.srv.FindByEmail("email")
+	USER, err := u.srv.FindByEmail(email)
 	if err != nil {
+		fmt.Println(err)
 		http.Error(w, "Error finding user by email", http.StatusInternalServerError)
+		return
 	}
+	w.Header().Set("Content-type", "application/json")
 	w.WriteHeader(http.StatusOK)
-	json.NewEncoder(w).Encode(&user)
+	json.NewEncoder(w).Encode(&USER)
 }
 
 func (u *userController) GetUsersByDate(w http.ResponseWriter, r *http.Request) {
@@ -45,9 +67,13 @@ func (u *userController) GetUsersByDate(w http.ResponseWriter, r *http.Request) 
 func (u *userController) GetAllUser(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-type", "application/json")
 	limit, offset := paginate(r)
+	fmt.Println(limit, offset)
 	Users, err := u.srv.FindAll(limit, offset)
+	fmt.Print(Users)
 	if err != nil {
+		log.Printf("error: %v", err)
 		http.Error(w, "Error finding clients", http.StatusInternalServerError)
+		return
 	}
 	w.WriteHeader(http.StatusOK)
 	json.NewEncoder(w).Encode(&Users)

@@ -6,9 +6,8 @@ import (
 )
 
 type UserRepoInterface interface {
+	Save(user2 *user.User) (*user.User, error)
 	GetByEmail(email string) (*user.User, error)
-	GetByDate(limit, offset string, start, end time.Time) (*user.Users, error)
-	GetAllUsers(limit, offset string) (*user.Users, error)
-	GetAllUsersByLimit(limit int) (*user.Users, error)
-	GetAllUsersByPage(page int) (*user.Users, error)
+	GetByDate(limit, offset string, start, end time.Time) ([]user.User, error)
+	GetAllUsers(limit, offset string) ([]user.User, error)
 }

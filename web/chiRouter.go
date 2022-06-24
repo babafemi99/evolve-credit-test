@@ -23,7 +23,7 @@ func (c *chiRouter) SERVE(port string) error {
 	log.Println("Chi router listening on port - ", port)
 	s := &http.Server{
 		Addr:    port,
-		Handler: router,
+		Handler: RouterChi,
 	}
 	err := s.ListenAndServe()
 	if err != nil {
@@ -32,6 +32,6 @@ func (c *chiRouter) SERVE(port string) error {
 	return nil
 }
 
-func newChiRouter() RouterInterface {
+func NewChiRouter() RouterInterface {
 	return &chiRouter{}
 }

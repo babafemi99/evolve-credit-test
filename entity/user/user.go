@@ -1,10 +1,13 @@
 package user
 
+import "time"
+
 type User struct {
-	Id        string `json:"id"`
-	FirstName string `json:"first_name"`
-	LastName  string `json:"last_name"`
-	email     string `json:"email"`
+	Id        string    `json:"id"`
+	FirstName string    `json:"first_name"`
+	LastName  string    `json:"last_name"`
+	Email     string    `json:"email"`
+	Date      time.Time `json:"date"`
 }
 
 type Users struct {
