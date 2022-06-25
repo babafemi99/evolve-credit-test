@@ -87,16 +87,20 @@ func NewUserController(srv userService.UserServiceInterface) UserControllerInter
 }
 
 func paginate(r *http.Request) (int, int) {
-	var page, limit, offset int
+	var page = 1
+	var offset int
+	var limit = 10
 	var err error
 	page, err = strconv.Atoi(r.URL.Query().Get("page"))
 	if err != nil {
-		return 10, 0
+		limit = 10
+		page = 1
+		return limit, page
 	}
 
 	limit, err = strconv.Atoi(r.URL.Query().Get("limit"))
 	if err != nil {
-		return 10, 0
+		return limit, page
 	}
 	offset = (page - 1) * limit
 	return limit, offset

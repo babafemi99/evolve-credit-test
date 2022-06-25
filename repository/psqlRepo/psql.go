@@ -83,6 +83,7 @@ func (p *psql) GetByEmail(email string) (*user.User, error) {
 func (p *psql) GetByDate(limit, offset string, start, end string) ([]user.User, error) {
 	var users []user.User
 	qbd := fmt.Sprintf("SELECT * FROM user_table WHERE date BETWEEN '%v' AND '%v' LIMIT %v OFFSET %v", start, end, limit, offset)
+	fmt.Println(qbd)
 	rows, err := p.driver.Query(context.Background(), qbd)
 	if err != nil {
 		log.Printf("Error querying users: %v", err)
