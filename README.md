@@ -10,6 +10,12 @@ It should allow the client to specify the number of records per page.
 
 
 POST /user - saves a user
+
+
 GET /users - gets all user (query parameters are page and limit, default limit is 10)
+
+
 GET /users/{email} - gets user with that particular email (query parameters are page and limit, default limit is 10)
+
+
 GET /users/date/{start}/{end} get users in that range of dates (query parameters are page and limit, default limit is 10)
