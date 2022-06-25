@@ -103,7 +103,7 @@ func (p *psql) GetByDate(limit, offset string, start, end string) ([]user.User, 
 
 func (p *psql) GetAllUsers(limit, offset string) ([]user.User, error) {
 	var users []user.User
-	queryBuilder := "SELECT id, first_name,last_name,email,date FROM user_table LIMIT" + limit + "OFFSET" + offset
+	queryBuilder := fmt.Sprintf("SELECT id, first_name,last_name,email,date FROM user_table LIMIT %v OFFSET %v", limit, offset)
 	query, err := p.driver.Query(context.Background(), queryBuilder)
 	if err != nil {
 		log.Printf("Error querying users: %v", err)

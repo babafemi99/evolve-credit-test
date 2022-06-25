@@ -72,7 +72,6 @@ func (u *userController) GetUsersByDate(w http.ResponseWriter, r *http.Request) 
 func (u *userController) GetAllUser(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-type", "application/json")
 	limit, offset := paginate(r)
-	fmt.Println(limit, offset)
 	Users, err := u.srv.FindAll(limit, offset)
 	if err != nil {
 		log.Printf("error: %v", err)
