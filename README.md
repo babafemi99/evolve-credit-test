@@ -9,6 +9,8 @@ It should allow the client to retrieve data by pages (10 records per page) only.
 It should allow the client to specify the number of records per page.
 
 
+BASE  URL :107.20.78.154:9090
+
 POST /user - saves a user
 
 
