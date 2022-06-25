@@ -95,13 +95,14 @@ func paginate(r *http.Request) (int, int) {
 	if err != nil {
 		limit = 10
 		page = 1
-		return limit, page
+
 	}
 
 	limit, err = strconv.Atoi(r.URL.Query().Get("limit"))
 	if err != nil {
-		return limit, page
+		limit = 10
 	}
+	fmt.Println("page is", page)
 	offset = (page - 1) * limit
 	return limit, offset
 
